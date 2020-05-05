@@ -2,6 +2,19 @@
 # cookie-signature
 
   Sign and unsign cookies.
+  
+## Options
+
+
+```js
+var cookie = require('cookie-signature')({ algo: 'RSA-SHA3-512', digest: 'base64' });
+```
+or
+
+```js
+var cookie = require('cookie-signature');
+cookie.setOptions(({ algo: 'RSA-SHA3-512', digest: 'base64' }));
+```
 
 ## Example
 
