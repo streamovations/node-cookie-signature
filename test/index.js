@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var cookie = require('..');
+var cookie = require('..')();
 
 describe('.sign(val, secret)', function(){
   it('should sign the cookie', function(){
