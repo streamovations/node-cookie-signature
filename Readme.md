@@ -7,12 +7,12 @@
 
 
 ```js
-var cookie = require('cookie-signature')({ algo: 'RSA-SHA3-512', digest: 'base64' });
+var cookie = require('@streamovations/cookie-signature')({ algo: 'RSA-SHA3-512', digest: 'base64' });
 ```
 or
 
 ```js
-var cookie = require('cookie-signature');
+var cookie = require('@streamovations/cookie-signature');
 cookie.setOptions(({ algo: 'RSA-SHA3-512', digest: 'base64' }));
 ```
 
