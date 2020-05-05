@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/streamovations/node-cookie-signature.svg?branch=master)](https://travis-ci.org/streamovations/node-cookie-signature)
+
 # cookie-signature
 
   Sign and unsign cookies.
@@ -19,14 +21,12 @@ cookie.setOptions(({ algo: 'RSA-SHA3-512', digest: 'base64' }));
 ## Example
 
 ```js
-var cookie = require('cookie-signature');
+var cookie = require('cookie-signature')();
 
-var val = cookie.sign('hello', 'tobiiscool');
-val.should.equal('hello.DGDUkGlIkCzPz+C0B064FNgHdEjox7ch8tOBGslZ5QI');
+var val = cookie.sign('hello', 'luna');
+val.should.equal('hello.LiJQLQGTi6c0HVr2rNtsoNJwWGrPVV6fF/giLm8N/aki+SbHSlzxnc8U0A8ljQa3nl7YNbOijYjrvEFnWJFDRg');
 
-var val = cookie.sign('hello', 'tobiiscool');
-cookie.unsign(val, 'tobiiscool').should.equal('hello');
-cookie.unsign(val, 'luna').should.be.false;
+cookie.unsign(val, 'luna').should.equal('hello');
 ```
 
 ## License
