@@ -1,46 +1,57 @@
+'use strict'
+
 /**
  * Module dependencies.
  */
+const crypto = require('crypto')
 
-var crypto = require('crypto');
+module.exports = (options = { algo: 'RSA-SHA3-512', digest: 'base64' }) => {
 
-/**
- * Sign the given `val` with `secret`.
- *
- * @param {String} val
- * @param {String} secret
- * @return {String}
- * @api private
- */
+  let lib = {}
 
-exports.sign = function(val, secret){
-  if ('string' != typeof val) throw new TypeError("Cookie value must be provided as a string.");
-  if ('string' != typeof secret) throw new TypeError("Secret string must be provided.");
-  return val + '.' + crypto
-    .createHmac('sha256', secret)
-    .update(val)
-    .digest('base64')
-    .replace(/\=+$/, '');
-};
+  lib.options = options
 
-/**
- * Unsign and decode the given `val` with `secret`,
- * returning `false` if the signature is invalid.
- *
- * @param {String} val
- * @param {String} secret
- * @return {String|Boolean}
- * @api private
- */
+  lib.setOptions = options => { lib.options = options }
 
-exports.unsign = function(val, secret){
-  if ('string' != typeof val) throw new TypeError("Signed cookie string must be provided.");
-  if ('string' != typeof secret) throw new TypeError("Secret string must be provided.");
-  var str = val.slice(0, val.lastIndexOf('.'))
-    , mac = exports.sign(str, secret)
-    , macBuffer = Buffer.from(mac)
-    , valBuffer = Buffer.alloc(macBuffer.length);
+  /**
+   * Sign the given `value` with `secret`.
+   *
+   * @param {String} value
+   * @param {String} secret
+   * @return {String}
+   * @api private
+   */
 
-  valBuffer.write(val);
-  return crypto.timingSafeEqual(macBuffer, valBuffer) ? str : false;
-};
+  lib.sign = (value, secret) => {
+
+    if ('string' != typeof value) throw new TypeError('Value must be provided as a string.')
+    if ('string' != typeof secret) throw new TypeError('Secret string must be provided.')
+
+    return value + '.' + crypto.createHmac(lib.options.algo, secret).update(value, 'utf8').digest(lib.options.digest).replace(/\=+$/, '');
+  }
+
+  /**
+   * Unsign and decode the given `value` with `secret`,
+   * returning `false` if the signature is invalid.
+   *
+   * @param {String} value
+   * @param {String} secret
+   * @return {String|Boolean}
+   * @api private
+   */
+
+  lib.unsign = (value, secret) => {
+
+    if ('string' != typeof value) throw new TypeError('Signed valueue string must be provided.')
+    if ('string' != typeof secret) throw new TypeError('Secret string must be provided.')
+
+    let macBuffer = Buffer.from(lib.sign(value.slice(0, value.lastIndexOf('.')), secret)),
+        valueBuffer = Buffer.alloc(macBuffer.length)
+
+    valueBuffer.write(value)
+
+    return crypto.timingSafeEqual(macBuffer, valueBuffer) ? value.slice(0, value.lastIndexOf('.')) : false
+  }
+
+  return lib
+}
