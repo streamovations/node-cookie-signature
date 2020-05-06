@@ -19,10 +19,12 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "nyc": "^15.0.1",
     "should": "*"
   },
   "scripts": {
-    "test": "mocha --require should --reporter spec"
+    "test": "mocha --require should --check-leaks --reporter spec",
+    "coverage": "nyc npm run test"
   },
   "main": "index"
 }
