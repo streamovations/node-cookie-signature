@@ -7,29 +7,35 @@
 # cookie-signature
 
   Sign and unsign cookies.
-  
+## Install
+
+```bash
+npm i @streamovations/cookie-signature
+```
+
 ## Options
 
 
 ```js
-var cookie = require('@streamovations/cookie-signature')({ algo: 'RSA-SHA3-512', digest: 'base64' });
+var cookie = require('@streamovations/cookie-signature')({ algo: 'RSA-SHA3-512', digest: 'base64' })
 ```
 or
 
 ```js
-var cookie = require('@streamovations/cookie-signature');
-cookie.setOptions(({ algo: 'RSA-SHA3-512', digest: 'base64' }));
+var cookie = require('@streamovations/cookie-signature')()
+cookie.setOptions({ algo: 'RSA-SHA3-512', digest: 'base64' })
 ```
 
 ## Example
 
 ```js
-var cookie = require('cookie-signature')();
+var cookie = require('cookie-signature')()
 
-var val = cookie.sign('hello', 'luna');
-val.should.equal('hello.LiJQLQGTi6c0HVr2rNtsoNJwWGrPVV6fF/giLm8N/aki+SbHSlzxnc8U0A8ljQa3nl7YNbOijYjrvEFnWJFDRg');
+var val = cookie.sign('hello', 'luna')
+val.should.equal('hello.LiJQLQGTi6c0HVr2rNtsoNJwWGrPVV6fF/giLm8N/aki+SbHSlzxnc8U0A8ljQa3nl7YNbOijYjrvEFnWJFDRg')
 
-cookie.unsign(val, 'luna').should.equal('hello');
+cookie.unsign(val, 'luna').should.equal('hello')
+cookie.unsign(val, 'luna2').should.equal(false)
 ```
 
 ## License
