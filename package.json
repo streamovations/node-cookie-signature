@@ -2,7 +2,11 @@
   "name": "@streamovations/cookie-signature",
   "version": "1.1.1",
   "description": "Sign and unsign cookies",
-  "keywords": ["cookie", "sign", "unsign"],
+  "keywords": [
+    "cookie",
+    "sign",
+    "unsign"
+  ],
   "author": "TJ Holowaychuk <tj@learnboost.com>",
   "license": "MIT",
   "repository": {
