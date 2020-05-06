@@ -9,9 +9,15 @@ module.exports = (options = { algo: 'RSA-SHA3-512', digest: 'base64' }) => {
 
   let lib = {}
 
-  lib.options = options
+  lib.setOptions = options => { 
 
-  lib.setOptions = options => { lib.options = options }
+    lib.options = options 
+
+    if ('string' != typeof lib.options.algo) throw new TypeError('Algo must be provided.')
+    if ('string' != typeof lib.options.digest) throw new TypeError('Digest must be provided.')
+  }
+
+  lib.setOptions(options)
 
   /**
    * Sign the given `value` with `secret`.
@@ -24,10 +30,10 @@ module.exports = (options = { algo: 'RSA-SHA3-512', digest: 'base64' }) => {
 
   lib.sign = (value, secret) => {
 
-    if ('string' != typeof value) throw new TypeError('Value must be provided as a string.')
-    if ('string' != typeof secret) throw new TypeError('Secret string must be provided.')
+    if ('string' != typeof value) throw new TypeError('Value must be provided.')
+    if ('string' != typeof secret) throw new TypeError('Secret must be provided.')
 
-    return value + '.' + crypto.createHmac(lib.options.algo, secret).update(value, 'utf8').digest(lib.options.digest).replace(/\=+$/, '');
+    return value + '.' + crypto.createHmac(lib.options.algo, secret).update(value, 'utf8').digest(lib.options.digest).replace(/\=+$/, '')
   }
 
   /**
@@ -41,9 +47,9 @@ module.exports = (options = { algo: 'RSA-SHA3-512', digest: 'base64' }) => {
    */
 
   lib.unsign = (value, secret) => {
-
-    if ('string' != typeof value) throw new TypeError('Signed valueue string must be provided.')
-    if ('string' != typeof secret) throw new TypeError('Secret string must be provided.')
+    
+    if ('string' != typeof value) throw new TypeError('Value must be provided.')
+    if ('string' != typeof secret) throw new TypeError('Secret must be provided.')
 
     let macBuffer = Buffer.from(lib.sign(value.slice(0, value.lastIndexOf('.')), secret)),
         valueBuffer = Buffer.alloc(macBuffer.length)
